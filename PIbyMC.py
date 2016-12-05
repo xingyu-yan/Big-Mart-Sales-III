@@ -44,6 +44,3 @@ plt.title('N= %d ' ' Estimate of PI = %f' % (N_total,estimatePI[N_total-1]))
 plt.ylabel('Estimate of PI')
 plt.xlabel('Number of Iteration')
 plt.show()    
-
-'''estimatePI = 4*sum(N_in_circle) / N_total
-print(estimatePI)'''
