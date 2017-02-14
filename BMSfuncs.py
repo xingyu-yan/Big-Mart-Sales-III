@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def cgbt(theta,X,y,input_layer_size,hidden_layer_size,num_labels,lamb,alpha,beta,iterN,tol):
+def trainNN(theta,X,y,input_layer_size,hidden_layer_size,num_labels,lamb,alpha,beta,iterN,tol):
     # cgbt: Conjugate gradient descent method with backtracking line search
     # Input:
         # theta: Initial value
