@@ -1,6 +1,7 @@
 '''
 Created on January 28, 2016
-@author: Ran CHEN & Xingyu YAN, at University of Lille1
+@author: Ran CHEN & Xingyu YAN, at University of Lille1 & Ecole Centrale de Lille
+https://github.com/xingyu-yan
 # This programme is for Big Mart Sales Practice Problem with ANN
 # Web source URL: https://datahack.analyticsvidhya.com/contest/practice-problem-big-mart-sales-iii/
 # ANN method reference: Coursera Machine Learning open course (Andrew Ng)
@@ -8,7 +9,7 @@ Created on January 28, 2016
 
 import numpy as np
 import pandas as pd
-from BMS_package.BMSfuncs import randInitializeWeights, cgbt, predict
+from BMS_package.BMSfuncs import randInitializeWeights, trainNN, predict
 from BMS_package.BMSfuncs import print_results
 import matplotlib.pyplot as plt
 
@@ -47,8 +48,8 @@ initial_nn_params = np.r_[np.reshape(initial_Theta1,hidden_layer_size*(input_lay
 
 # Part 9: Training NN
 lamb = 0.04
-#Theta = cgbt(initial_nn_params,X,y,input_layer_size,hidden_layer_size,num_labels,lamb,0.25,0.5,500,1e-8)
-Theta = cgbt(initial_nn_params,X_train,y_train,input_layer_size,hidden_layer_size,num_labels,lamb,0.25,0.5,5,1e-8)
+
+Theta = trainNN(initial_nn_params,X_train,y_train,input_layer_size,hidden_layer_size,num_labels,lamb,0.25,0.5,5,1e-8)
 
 Theta1 = np.matrix(np.reshape(Theta[:hidden_layer_size*(input_layer_size+1)],(hidden_layer_size,input_layer_size+1),order='F'))
 Theta2 = np.matrix(np.reshape(Theta[hidden_layer_size*(input_layer_size+1):],(num_labels,hidden_layer_size+1),order='F'))
