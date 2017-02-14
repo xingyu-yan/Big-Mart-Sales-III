@@ -1,8 +1,15 @@
+'''
+@author: xingyu, created on December 5, 2016, at Ecole Centrale de Lille
+https://github.com/xingyu-yan
+
+# This programme is for Big Mart Sales Practice Problem with ANN
+# ANN method reference: Coursera Machine Learning open course (Andrew Ng)
+'''
+
 import numpy as np
-import matplotlib.pyplot as plt
 
 def trainNN(theta,X,y,input_layer_size,hidden_layer_size,num_labels,lamb,alpha,beta,iterN,tol):
-    # cgbt: Conjugate gradient descent method with backtracking line search
+    # trainNN: Conjugate gradient descent method with backtracking line search
     # Input:
         # theta: Initial value
         # X: Training data (input)
@@ -68,38 +75,6 @@ def trainNN(theta,X,y,input_layer_size,hidden_layer_size,num_labels,lamb,alpha,b
 
     return theta
     
-def displayData(X,nameFig):
-    # python translation of displayData.m from coursera
-    # For now, only "quadratic" image
-    example_width = np.round(np.sqrt(X.shape[1]))
-    example_height = example_width
-    
-    display_rows = np.floor(np.sqrt(X.shape[0]))
-    display_cols = np.ceil(X.shape[0]/display_rows)
-
-    pad = 1
-
-    display_array = -np.ones((pad+display_rows*(example_height+pad), pad+display_cols*(example_width+pad)))
-
-    curr_ex = 0
-
-    for j in range(display_rows.astype(np.int16)):
-        for i in range(display_cols.astype(np.int16)):
-            if curr_ex == X.shape[0]:
-                break
-            max_val = np.max(np.abs(X[curr_ex,:]))
-            rowStart = pad+j*(example_height+pad)
-            colStart = pad+i*(example_width+pad)
-            display_array[rowStart:rowStart+example_height, colStart:colStart+example_width] = X[curr_ex,:].reshape((example_height,example_width)).T/max_val
-
-            curr_ex += 1
-        if curr_ex == X.shape[0]:
-            break
-
-    plt.imshow(display_array,extent = [0,10,0,10])
-    plt.savefig(nameFig)
-    plt.show()
-
 def sigmoidGradient(z):
     g = 1/(1+np.exp(-z))
     return np.multiply(g,1-g)
@@ -214,10 +189,6 @@ def randInitializeWeights(L_in,L_out):
     epsilon_init = 0.12
     return np.random.rand(L_out,L_in+1)*2*epsilon_init-epsilon_init
 
-def debugInitializeWeights(fan_out,fan_in):
-    num_el = fan_out*(fan_in+1)
-    return np.reshape(np.sin(np.linspace(1,num_el,num_el)),(fan_out,fan_in+1),order='F')/10
-
 def computeNumericalGradient(nn_params,input_layer_size,hidden_layer_size,num_labels,X,y,lamb):
     numgrad = np.zeros(nn_params.shape)
     perturb = np.zeros(nn_params.shape)
@@ -230,22 +201,6 @@ def computeNumericalGradient(nn_params,input_layer_size,hidden_layer_size,num_la
         perturb[p] = 0
     return numgrad
 
-def checkNNGradients(lamb):
-    input_layer_size = 3
-    hidden_layer_size = 5
-    num_labels = 3
-    m = 5
-    Theta1 = debugInitializeWeights(hidden_layer_size,input_layer_size)
-    Theta2 = debugInitializeWeights(num_labels,hidden_layer_size)
-    X = debugInitializeWeights(m,input_layer_size-1)
-    y = np.matrix(np.mod(np.linspace(1,m,m),num_labels)+1).T
-    nn_params = np.r_[np.matrix(np.reshape(Theta1, Theta1.shape[0]*Theta1.shape[1], order='F')).T,np.matrix(np.reshape(Theta2, Theta2.shape[0]*Theta2.shape[1], order='F')).T]
-    (cost,grad) = nnCostFunction(nn_params,input_layer_size,hidden_layer_size,num_labels,X,y,lamb)
-    numgrad = computeNumericalGradient(nn_params,input_layer_size,hidden_layer_size,num_labels,X,y,lamb)
-    diff = np.linalg.norm(numgrad-grad)/np.linalg.norm(numgrad+grad)
-#    print(cost)
-    print ('If your backpropagation implementation is correct, then the relative difference will be small (less than 1e-9). \nRelative difference:',diff,'\n')
- 
 def predict(Theta1,Theta2,X):
     X = np.c_[np.ones((X.shape[0],1)),X]
     z2 = np.dot(Theta1,X.T)
@@ -264,4 +219,3 @@ def print_results(name, errors):
     rmse = np.sqrt(np.mean(np.mean(errors_square)))
     print(name,' nMAE is %f\n', mae)
     print(name,' nRMSE is %f\n', rmse)
-    
