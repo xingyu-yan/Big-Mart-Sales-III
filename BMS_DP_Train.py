@@ -1,6 +1,6 @@
 '''
-Created on January 28, 2016
-@author: Ran CHEN & Xingyu YAN, at University of Lille1
+@author: xingyu, created on December 5, 2016, at Ecole Centrale de Lille
+https://github.com/xingyu-yan
 # This programme is for Big Mart Sales Practice Problem with ANN
 # Web source URL: https://datahack.analyticsvidhya.com/contest/practice-problem-big-mart-sales-iii/
 # ANN method reference: Coursera Machine Learning open course (Andrew Ng)
@@ -9,17 +9,17 @@ Created on January 28, 2016
 import numpy as np
 import pandas as pd
 
-# Part 1: Loading and visualizing data
+# Loading data
 print("Loading Data ...\n")
 DataTrain = pd.read_csv('Train_UWu5bXk.csv') 
 A_col_train = np.matrix(DataTrain)
-print(A_col_train)
+#print(A_col_train)
 m = len(A_col_train)
-print(m)
+#print(m)
 
 Item_Identifier = A_col_train[0:m,0]
 Item_Weight = A_col_train[0:m,1]
-print(Item_Weight[0:8])
+#print(Item_Weight[0:8])
 Item_Fat_Content = A_col_train[0:m,2]
 Item_Visibility = A_col_train[0:m,3]
 Item_Type = A_col_train[0:m,4]              
@@ -27,15 +27,16 @@ Item_MRP = A_col_train[0:m,5]
 Outlet_Identifier = A_col_train[0:m,6]      
 Outlet_Establishment_Year = A_col_train[0:m,7]
 Outlet_Size = A_col_train[0:m,8] 
-print(Outlet_Size[0:5])
+#print(Outlet_Size[0:5])
 Outlet_Location_Type = A_col_train[0:m,9]  
 Outlet_Type = A_col_train[0:m,10]
 
 y_train = A_col_train[0:m,11]
 
 t = np.math.isnan(Outlet_Size[3])
-print(t)
+#print(t)
 
+# Data processing 
 Item_weight = np.zeros((m,1))
 for i in range(m):
     tt = Item_Weight[i]
@@ -149,18 +150,21 @@ Data_Train_Orginal = np.hstack((Item_identifier, Item_weight, Item_fat_content, 
                       Item_type, Item_mrp, Outlet_identifier, Outlet_establishment_year, 
                       Outlet_location_type, Outlet_type, y_train))
 print(Data_Train_Orginal)
+
+# Save data after data processing 
 import csv
 b = open('TrainDataOrginal.csv', 'a') 
 a = csv.writer(b)
 a.writerows(Data_Train_Orginal)  
 b.close
 
+# Data normalization and normalized data saving
 DTOsize = np.shape(Data_Train_Orginal)
-print(DTOsize)
+#print(DTOsize)
 RowSize = DTOsize[0]
 ColumnSize = DTOsize[1]
-print(DTOsize[1])
-print(DTOsize[0])
+#print(DTOsize[1])
+#print(DTOsize[0])
 
 Data_Train_Normalized = np.zeros((RowSize,ColumnSize))
 for j in range(ColumnSize):
@@ -168,8 +172,8 @@ for j in range(ColumnSize):
     minValue = min(Data_Train_Orginal[:,j])
     for i in range(RowSize):
         Data_Train_Normalized[i,j] = (Data_Train_Orginal[i,j]-minValue)/(maxValue-minValue)
-print('All the Normalized Trainning Data:')
-print(Data_Train_Normalized)
+#print('All the Normalized Trainning Data:')
+#print(Data_Train_Normalized)
 b = open('TrainDataNormalized.csv', 'a') 
 a = csv.writer(b)
 a.writerows(Data_Train_Normalized)  
